@@ -1,0 +1,63 @@
+
+th {
+    background-color: #001f3f;
+    color: #fff;
+    padding: 3em 1em;
+    font-size: 4pt;
+}
+
+td {
+    border-top: 1px solid #ffecec;
+    padding: 1.3em 1em;
+    text-align: center;
+    font-size: 7pt;
+}
+
+input {
+    cursor: pointer;
+}
+
+/* Column types */
+th.missed-col {
+    background-color: #f00;
+}
+
+td.missed-col {
+    background-color: #ffecec;
+    color: #f00;
+    text-align: center;
+}
+
+td.missed-col1 {
+    background-color: #ffecec;
+    color: #f00;
+    text-align: center;
+}
+
+td.missed-col2 {
+    background-color: #ffecec;
+    color: #f00;
+    text-align: center;
+}
+
+td.missed-col3 {
+    background-color: #ffecec;
+    color: #f00;
+    text-align: center;
+}
+
+td.missed-col4 {
+    background-color: #ffecec;
+    color: #f00;
+    text-align: center;
+}
+
+td.missed-col5 {
+    background-color: #ffecec;
+    color: #f00;
+    text-align: center;
+}
+
+.name-col {
+    text-align: center;
+}

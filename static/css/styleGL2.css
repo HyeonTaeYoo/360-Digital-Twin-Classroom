@@ -1,0 +1,93 @@
+@font-face{
+    font-family: abster;
+    src:url(/static/font/abster-webfont.woff) format('woff');
+}
+*{ 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/static/images/children.jpg');
+}
+
+.container .header{
+    width: 80%;
+    height: 80px;
+    margin:0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container .header h1 a{
+    text-decoration: none;
+    color: white;
+    font-family: abster;
+}
+
+.container .nav ul li{
+    display:inline-block;
+    margin:0 10px;
+}
+
+.container .nav ul li a{
+    text-decoration: none;
+    color: white;
+}
+
+.container .nav ul li a:hover{
+    color: #1fdfdf;
+}
+
+canvas{
+    margin: 0px auto;
+    position:absolute;
+    left: 10%;
+    width: 100%;
+    height: 100%;
+    /* width: 1300px;
+    height: 800px; */
+    border: 10px #1fdfdf solid;
+    display: block;
+    /* background: url(https://threejsfundamentals.org/threejs/resources/images/daikanyama.jpg) no-repeat center center ;
+    background-size: cover; */
+}
+
+#submit1{
+    width:120px;
+    height: 40px;
+    background-color: #d9d7e2;
+    color:rgb(15, 3, 3);
+    box-shadow: 0 4px 16px rgba(0,79,255,0.3);
+    font-size: 16px;
+    font-weight: bold;
+    position:absolute;
+    top:90%;
+    left:25%;
+}
+
+#submit2{
+    width:120px;
+    height: 40px;
+    background-color: #d9d7e2;
+    color:rgb(15, 3, 3);
+    box-shadow: 0 4px 16px rgba(0,79,255,0.3);
+    font-size: 16px;
+    font-weight: bold;
+    position:absolute;
+    top:90%;
+    left:50%;
+}
+
+button:focus{
+    outline: 0;
+}
+button:hover{
+    background-color: rgba(77, 115, 199, 0.3);
+    cursor: pointer;
+}
+

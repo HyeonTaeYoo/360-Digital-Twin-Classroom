@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360classroom</title>
+    <link rel = "stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleGL.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ui.css') }}"/>
+    <script src="{{url_for('static', filename='js/three.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/script_js.js')}}"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><a href="#">360 Twin Classroom</a></h1>                                                                                                                                                                                                                                                                                       
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                     <li><a href="#">소개</a></li>
+                     <li><form action="/" method="GET">
+                        <a href="/Hair" class="card-link">Avatar Register</a>
+                      </form></li>
+                </ul>
+            </div>
+        </div>
+      
+      <div class="containerBox">
+         <div class="containerBox1">
+            <canvas id = "canvasID"> </canvas>
+                
+                    <form action="/" method="GET">
+                        <a href="/virtualSpatial" class="card-link">virtualSpatial</a>
+                    </form>
+                
+                    <form action="/" method="GET">
+                        <a href="/realSpatial" class="card-link2">realSpatial</a>
+                    </form>
+         </div>
+      </div>
+
+              <table style="margin-left: 82%;" bgcolor="white">
+
+        <thead>
+          <tr>
+            <th class="name-col">Student</th>
+            <th>1주차</th>
+            <th>2주차</th>
+            <th>3주차</th>
+            <th>4주차</th>
+            <th>5주차</th>
+
+            <th class="missed-col">현재 상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="student">
+            <td cass="name-coll">김유성</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox"></td>
+            <td class="attend-col"><input type="checkbox"></td>
+            <td class id="missed-col1">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">김주형</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox"></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col2">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">김진호</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col3">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">박재현</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox"  ></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col4">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">유현태</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col5">x</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <script type="module">
+        import { OBJLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/OBJLoader.js';
+        import { MTLLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/MTLLoader.js';
+        import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js';
+
+        const scene = new THREE.Scene(); // scene은 전역 변수로 고정
+        const objLoader = new OBJLoader(); // 오브젝트 파일 로더
+        const mtlLoader = new MTLLoader();
+        const loader = new THREE.TextureLoader(); // 텍스처 로더
+        var ppt = {{imglist|safe}}
+
+        var height=-700
+        var num1_x = 400;
+        var num1_y = height;
+        var num1_z = 600;
+
+        var num2_x = 400;
+        var num2_y = height;
+        var num2_z = 0;
+
+        var num3_x = 400;
+        var num3_y = height;
+        var num3_z = -600;
+
+        var num4_x = -300;
+        var num4_y= height;
+        var num4_z = 300;
+
+        var num5_x = -300;
+        var num5_y = height;
+        var num5_z = -300;
+
+        var ht_x=num5_x;
+        var ht_y=num5_y;
+        var ht_z=num5_z;
+
+        var jhyeong_x=num2_x;
+        var jhyeong_y=num2_y;
+        var jhyeong_z=num2_z;
+
+        var jhyeon_x=num1_x;
+        var jhyeon_y=num1_y;
+        var jhyeon_z=num1_z;
+
+        var ys_x=num3_x;
+        var ys_y=num3_y;
+        var ys_z=num3_z;
+
+        var jho_x=num4_x;
+        var jho_y=num4_y;
+        var jho_z=num4_z;
+        
+        function makeInstance(geometry, color, x) {
+            const material = new THREE.MeshPhongMaterial({ color });
+
+            const cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+            cube.position.x = x;
+
+            return cube;
+        }
+
+        function draw_line(color, x1, y1, z1, x2, y2, z2) {
+            const material = new THREE.LineBasicMaterial({
+                color: color
+            });
+
+            const points = [];
+            points.push(new THREE.Vector3(x1, y1, z1));
+            points.push(new THREE.Vector3(x2, y2, z2));
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
+        }
+
+        function draw_axis() {
+            draw_line(0xff0000, 10, 0, 0, 0, 0, 0); // x8-0
+            draw_line(0x00ff00, 0, 10, 0, 0, 0, 0); // y
+            draw_line(0x0000ff, 0, 0, 10, 0, 0, 0); // z
+        }
+
+        function resizeRendereToDisplaySize(renderer) {
+            const canvas = renderer.domElement;
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            const needResize = canvas.width !== width || canvas.heigth !== height;
+            if (needResize) {
+                renderer.setSize(width, height, false);
+            }
+            return needResize;
+        }
+
+        function obj_load(path) {
+
+            objLoader.load(path, (root) => {
+                scene.add(root);
+            });
+        }
+
+        function obj_load_with(path1, path2, name1, x1, y1, z1, sx=0,sy=0,sz=0) {
+            mtlLoader.load(path1, (mtl) => {
+                mtl.preload();
+                const objLoader = new OBJLoader();
+
+                objLoader.setMaterials(mtl);
+
+                objLoader.load(path2, (root) => {
+                    root.position.x = x1
+                    root.position.y = y1
+                    root.position.z = z1
+
+                    if (sx != 0)    root.scale.x += sx;   //앞,뒤
+                    if (sy != 0)    root.scale.y += sy;  //위,아래
+                    if (sz != 0)    root.scale.z += sz;  //왼쪽,오른쪽
+                    root.name = name1;
+                    scene.add(root);
+                });
+                
+            });
+        }
+
+
+
+        function main() {
+            // 내가 원하는 위치의 canvas에 project 띄우기
+            const canvas = document.querySelector('#canvasID');
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+
+            const fov = 80;
+            const aspect = canvas.width / canvas.height;  // the canvas default
+            const near = 0.1; // near와 far는 카메라로부터의 거리
+            const far = 2500;
+            const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+            camera.position.x = -11
+            const controls = new OrbitControls(camera, canvas);
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            const boxWidth = 2500;
+            const boxHeight = 2000;
+            const boxDepth = 2000;
+            const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+
+            //const material = new THREE.MeshBasicMaterial({ color: 0x44aa88 });  // greenish blue
+            const materials = [
+                new THREE.MeshBasicMaterial({ side: THREE.BackSide, map: loader.load('./static/cube/nz.png') }),
+                new THREE.MeshBasicMaterial({ side: THREE.BackSide, map: loader.load('./static/cube/pz.png') }),
+                new THREE.MeshBasicMaterial({ side: THREE.BackSide, map: loader.load('./static/cube/py_temp2.png') }),
+                new THREE.MeshBasicMaterial({ side: THREE.BackSide, map: loader.load('./static/cube/ny_final.png') }),
+                new THREE.MeshBasicMaterial({ side: THREE.BackSide, map: loader.load('./static/cube/px.png') }),
+                new THREE.MeshBasicMaterial({ side: THREE.BackSide, map: loader.load('./static/cube/nx.png') }),
+            ];
+            //const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 }); // 광원에 반응하는 머터리얼
+            const cube = new THREE.Mesh(geometry, materials);
+            //console.log(cube.position.x);
+            //cube.rotation.y = 40;
+            //cube.position.x = 100;
+            //cube.position.y = 0;
+            //console.log(cube.position.x);
+            scene.add(cube);
+
+            var jh_loader = new THREE.TextureLoader();
+            jh_loader.crossOrigin = '';
+            //
+            var textureToShow = 0;
+
+            var jh_mat = new THREE.MeshBasicMaterial();
+            const jhw = 0.1;
+            const jhh = 1000;
+            const jhd = 1200;
+            var jh_geo = new THREE.BoxGeometry(jhw,jhh,jhd);
+            var jh = new THREE.Mesh(jh_geo, jh_mat);
+
+            jh_loader.load(ppt[textureToShow], function(tex) {
+                jh_mat.map = tex;
+                textureToShow++;
+                jh.position.x +=798;
+                jh.position.y += 220;
+                jh.scale.y +=0.35
+                jh.scale.z +=0.35
+                scene.add(jh)
+            });
+
+            // 광원 생성
+            const color = 0xffffff; // 
+            const intensity = 1.5;
+            const amb_light = new THREE.AmbientLight(color, intensity);
+            // 광원 위치 // target은 조명이 향하는 곳임 디폴트는 둘다 (0, 0,0)
+            scene.add(amb_light);
+            function keyDownHandler(e) {
+                if(e.keyCode == 39) { 
+                    camera.position.z  +=10;
+
+                }
+                else if(e.keyCode == 37) { 
+                    camera.position.z -=10;
+
+                } 
+                else if(e.keyCode == 38) {  
+                    camera.position.x +=10; 
+
+                }
+                else if(e.keyCode == 40) {  
+                    camera.position.x  -=10;
+
+                }
+                else if(e.keyCode == 90) {  
+                    camera.position.y +=10;
+                }
+                else if(e.keyCode == 88) {  
+                    camera.position.y -=10;
+                }
+                
+                else if(e.keyCode == 66){ //b
+                    jh_loader.load(ppt[textureToShow],function(tex){
+                        jh_mat.map = tex;
+                        --textureToShow;
+                        if(textureToShow < 0){
+                            textureToShow = ppt.length - 1;
+                        }
+                    })
+                }
+                else if(e.keyCode == 78) { //n
+                    jh_loader.load(ppt[textureToShow],function(tex){
+                        jh_mat.map = tex;
+                        ++textureToShow;
+                        if(textureToShow > ppt.length-1){
+                            textureToShow = 0;
+                        }
+                    });
+                }
+
+                else if(e.keyCode == 49) {  // 주형
+                    camera.position.set(430, 30, -150) ;
+                    controls.target.set(700, 50, 50);
+                    controls.update();
+                }
+                else if(e.keyCode == 50) {  //재현
+                    camera.position.set(130, 30, -150) ;
+                    controls.target.set(700, 50, 50);
+                    controls.update();
+                }
+                else if(e.keyCode == 51) {   //유성
+                    camera.position.set(-170, 30, -150) ;
+                    controls.target.set(700, 50, 50);
+                    controls.update();
+                }
+                else if(e.keyCode == 52) {  //현태
+                    camera.position.set(430, 30, 250) ;
+                    controls.target.set(700, 50, 50);
+                    controls.update();
+                }
+                else if(e.keyCode == 53) {  //진호
+                    camera.position.set(130, 30, 250) ;
+                    controls.target.set(700, 50, 50);
+                    controls.update();
+                }
+                else if(e.keyCode == 48) {  //원점
+                    camera.position.set(0, 70, 0);
+                    controls.target.set(700, 50, 50);
+                    controls.update();
+                }
+            }   
+
+
+        window.addEventListener('keydown', (e) => {
+            keyDownHandler(e);
+        });
+        
+        function render(time) {
+            if (resizeRendereToDisplaySize(renderer)) {
+                const canvas = renderer.domElement;
+                camera.aspect = canvas.clientWidth / canvas.clientHeight; // 가로세로 비 갱신
+                camera.updateProjectionMatrix(); // 투영 행렬 업데이트
+            }
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render); // 루프 시작
+        }
+
+        function makeLabelCanvas(baseWidth, size, name,label_color) {
+            const borderSize = 2;
+            const ctx = document.createElement('canvas').getContext('2d');
+            const font =  `${size}px bold sans-serif`;
+            ctx.font = font;
+            // measure how long the name will be
+            const textWidth = ctx.measureText(name).width;
+
+            const doubleBorderSize = borderSize * 2;
+            const width = baseWidth + doubleBorderSize;
+            const height = size + doubleBorderSize;
+            ctx.canvas.width = width;
+            ctx.canvas.height = height;
+
+            // need to set font again after resizing canvas
+            ctx.font = font;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+
+            ctx.fillStyle = label_color;
+            ctx.fillRect(0, 0, width, height);
+
+            // scale to fit but don't stretch
+            const scaleFactor = Math.min(1, baseWidth / textWidth);
+            ctx.translate(width / 2, height / 2);
+            ctx.scale(scaleFactor, 1);
+            ctx.fillStyle = 'white';
+            ctx.fillText(name, 0, 0);
+
+            return ctx.canvas;
+        }
+
+        function makeBillboard(x, y, z,labelWidth,size, name,label_color) {
+
+            const canvas = makeLabelCanvas(labelWidth, size, name,label_color);
+            const texture = new THREE.CanvasTexture(canvas);
+            // because our canvas is likely not a power of 2
+            // in both dimensions set the filtering appropriately.
+            texture.minFilter = THREE.LinearFilter;
+            texture.wrapS = THREE.ClampToEdgeWrapping;
+            texture.wrapT = THREE.ClampToEdgeWrapping;
+
+            const labelMaterial = new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+            });
+
+            const root = new THREE.Object3D();
+            root.position.x = x;
+
+
+            const label = new THREE.Sprite(labelMaterial);
+            //label.name = 'ss';
+            root.add(label);
+            label.position.y = y;
+            label.position.z = z;
+
+            const labelBaseScale = 0.1;
+            label.scale.x = canvas.width  * labelBaseScale;
+            label.scale.y = canvas.height * labelBaseScale;
+
+            //scene.add(root);
+            return root;
+        }
+
+        var HyeonTae_On =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'blue');
+        var HyeonTae_Off =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'red');
+        var HyeonTae_H =  makeBillboard(ht_x, height+460, ht_z, 1800, 800, 'Hand up', 'green');
+
+        var JooHyeong_On = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'blue');
+        var JooHyeong_Off = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'red');
+        var JooHyeong_H = makeBillboard(jhyeong_x, height+460, jhyeong_z, 1800, 800, 'Hand up', 'green');
+
+        var JeaHyeon_On =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'blue');
+        var JeaHyeon_Off =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'red');
+        var JeaHyeon_H =  makeBillboard(jhyeon_x, height+460, jhyeon_z, 1800, 800, 'Hand up', 'green');
+
+        var Yoosung_On =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'blue');
+        var Yoosung_Off =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'red');
+        var Yoosung_H =  makeBillboard(ys_x, height+460, ys_z, 1800, 800, 'Hand up', 'green');
+        
+        var JinHo_On =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'blue');
+        var JinHo_Off =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'red');
+        var JinHo_H =  makeBillboard(jho_x, height+460, jho_z, 1800, 800, 'Hand up', 'green');
+        
+        var flag1 = false;
+        var flag2 = false;
+        var flag3 = false;
+        var flag4 = false;
+        var flag5 = false;
+
+        function text(vars) { 
+            
+            if(vars['is_stereo_matched']=='x')
+            {
+                if (vars['hyeontae'][0] == 'o')
+                {
+                    scene.remove(HyeonTae_Off);
+                    scene.add(HyeonTae_On);
+                    flag5=true;
+                }
+                else 
+                {   
+                    scene.remove(HyeonTae_On);
+                    /*if(vars['is_stereo_matched']=='x' && vars['hyeontae'][2] == -100){
+                    scene.add(HyeonTae_Off);
+                    }
+                    if(vars['is_stereo_matched']=='o' && vars['joohyeong'][2] == -100){
+                    scene.remove(HyeonTae_Off);
+                    }*/
+                    scene.add(HyeonTae_Off);
+                    flag5=false;
+                }
+                if (vars['jaehyeon'][0] == 'o')
+                {
+                    scene.remove(JeaHyeon_Off);
+                    scene.add(JeaHyeon_On);
+                    flag4=true;
+                }
+                else
+                {   
+                    scene.remove(JeaHyeon_On);
+                    scene.add(JeaHyeon_Off);
+                    flag4=false;
+                    /*if(vars['is_stereo_matched']=='x' && vars['jaehyeon'][2] == -100){
+                    scene.add(JeaHyeon_Off);
+                    }
+                    if(vars['is_stereo_matched']=='o' && vars['jaehyeon'][2] == -100)
+                    {
+                    scene.remove(JeaHyeon_Off);
+                    }*/
+                }
+                if (vars['jinho'][0] == 'o')
+                {
+                    scene.remove(JinHo_Off);
+                    scene.add(JinHo_On);
+                    flag3=true;
+                }
+                else
+                {   
+                    scene.remove(JinHo_On);
+                    scene.add(JinHo_Off);
+                    flag3=false;
+                    /*if(vars['is_stereo_matched']=='x' && vars['jinho'][2] == -100){
+                    scene.add(JinHo_Off);
+                    }
+                    if(vars['is_stereo_matched']=='o' && vars['jinho'][2] == -100){
+                    scene.remove(JinHo_Off);
+                    }*/    
+                }
+                if (vars['joohyeong'][0] == 'o') // 주형이가 교실에 있다고 표시된 경우
+                {
+                    scene.remove(JooHyeong_Off);
+                    scene.add(JooHyeong_On);
+                    flag2=true;
+                }
+                else //
+                {   
+                    scene.remove(JooHyeong_On);
+                    scene.remove(JooHyeong_Off);
+                    if(vars['is_stereo_matched']=='x'){
+                        scene.add(JooHyeong_Off);
+                    }
+                    flag2=false;
+                }
+                if (vars['yoosung'][0] == 'o')
+                {
+                    scene.remove(Yoosung_Off);
+                    scene.add(Yoosung_On);
+                    flag1 =true
+                }
+                else
+                {   
+                    scene.remove(Yoosung_On);
+                    scene.add(Yoosung_Off);
+                    flag1 = false
+                }
+
+                
+                if (flag1 == true)    // 유성 flag on
+                {   
+                    document.getElementById('missed-col1').innerHTML="o";  
+                }
+                else if (flag1 == false)
+                {
+                    document.getElementById('missed-col1').innerHTML="x"; 
+                }
+                if (flag2 == true)    // 주형 flag on
+                {   
+                    document.getElementById('missed-col2').innerHTML="o";  
+                }
+                else if (flag2 == false)
+                {
+                    document.getElementById('missed-col2').innerHTML="x"; 
+                }
+                if (flag3 == true)    // 진호 flag on
+                {   
+                    document.getElementById('missed-col3').innerHTML="o";  
+                }
+                else if (flag3 == false)
+                {
+                    document.getElementById('missed-col3').innerHTML="x"; 
+                }
+                if (flag4 == true)    // 재현 flag on
+                {   
+                    document.getElementById('missed-col4').innerHTML="o";  
+                }
+                else if (flag4 == false)
+                {
+                    document.getElementById('missed-col4').innerHTML="x"; 
+                }
+                if (flag5 == true)    // 현태 flag on
+                {   
+                    document.getElementById('missed-col5').innerHTML="o";  
+                }
+                else if (flag5 == false)
+                {
+                    document.getElementById('missed-col5').innerHTML="x"; 
+                }
+
+
+
+
+
+
+
+
+
+                if (vars['hyeontae'][1] == 'u')
+                {
+                    scene.add(HyeonTae_H);
+                }
+                else  
+                {
+                    scene.remove(HyeonTae_H);
+                }
+                if (vars['jaehyeon'][1] == 'u')
+                {
+                    scene.add(JeaHyeon_H);
+                }
+                else
+                {   
+                    scene.remove(JeaHyeon_H);
+                }
+                if (vars['jinho'][1] == 'u')
+                {
+                    scene.add(JinHo_H);
+                }
+                else
+                {   
+                    scene.remove(JinHo_H);
+                }
+                if (vars['joohyeong'][1] == 'u')
+                {
+                    scene.add(JooHyeong_H);
+                }
+                else
+                {   
+                    scene.remove(JooHyeong_H);
+                }
+
+                if (vars['yoosung'][1] == 'u')
+                {
+                    scene.add(Yoosung_H);
+                }
+                else
+                {   
+                    scene.remove(Yoosung_H);
+                }
+            }
+            if(vars['is_stereo_matched']=='o')
+            {   
+                /***************************************Hyeontae****************************************/
+                if (vars['hyeontae'][2] == 1)
+                {
+                    scene.remove(scene.getObjectByName("hyeontae"));
+                    ht_x=num1_x;
+                    ht_y=num1_y;
+                    ht_z=num1_z;
+                                    HyeonTae_On =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'blue');
+                HyeonTae_Off =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'red');
+                HyeonTae_H =  makeBillboard(ht_x, height+460, ht_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Hyeontae.mtl', 'static/Virtual_obj/Hyeontae.obj', "hyeontae", ht_x, ht_y, ht_z,-0.25,-0.15,-0.25 );
+                    scene.add(HyeonTae_On);
+                }
+                else if (vars['hyeontae'][2] == 2)
+                {
+                    scene.remove(scene.getObjectByName("hyeontae"));
+                    ht_x=num2_x;
+                    ht_y=num2_y;
+                    ht_z=num2_z;
+                                    HyeonTae_On =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'blue');
+                HyeonTae_Off =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'red');
+                HyeonTae_H =  makeBillboard(ht_x, height+460, ht_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Hyeontae.mtl', 'static/Virtual_obj/Hyeontae.obj', "hyeontae",ht_x, ht_y, ht_z,-0.25,-0.15,-0.25 );
+                    scene.add(HyeonTae_On);
+                }
+                else if (vars['hyeontae'][2] == 3)
+                {
+                    scene.remove(scene.getObjectByName("hyeontae"));
+                    ht_x=num3_x;
+                    ht_y=num3_y;
+                    ht_z=num3_z;
+                                    HyeonTae_On =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'blue');
+                HyeonTae_Off =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'red');
+                HyeonTae_H =  makeBillboard(ht_x, height+460, ht_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Hyeontae.mtl', 'static/Virtual_obj/Hyeontae.obj', "hyeontae",ht_x, ht_y, ht_z,-0.25,-0.15,-0.25 );
+                    scene.add(HyeonTae_On);
+                }
+                else if (vars['hyeontae'][2] == 4)
+                {
+                    scene.remove(scene.getObjectByName("hyeontae"));
+                    ht_x=num4_x;
+                    ht_y=num4_y;
+                    ht_z=num4_z;
+                                    HyeonTae_On =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'blue');
+                HyeonTae_Off =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'red');
+                HyeonTae_H =  makeBillboard(ht_x, height+460, ht_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Hyeontae.mtl', 'static/Virtual_obj/Hyeontae.obj', "hyeontae",ht_x, ht_y, ht_z,-0.25,-0.15,-0.25 );
+                    scene.add(HyeonTae_On);
+                }
+                else if (vars['hyeontae'][2] == 5)
+                {
+                    scene.remove(scene.getObjectByName("hyeontae"));
+                    ht_x=num5_x;
+                    ht_y=num5_y;
+                    ht_z=num5_z;
+                                    HyeonTae_On =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'blue');
+                HyeonTae_Off =  makeBillboard(ht_x, height+400, ht_z, 1800, 800, 'HyeonTae', 'red');
+                HyeonTae_H =  makeBillboard(ht_x, height+460, ht_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Hyeontae.mtl', 'static/Virtual_obj/Hyeontae.obj', "hyeontae",ht_x, ht_y, ht_z,-0.25,-0.15,-0.25 );
+                    scene.add(HyeonTae_On);
+                }
+                else if (vars['hyeontae'][2] == -100)
+                {
+                    scene.remove(scene.getObjectByName("hyeontae"));
+                }
+
+                /***************************************Jaehyeon****************************************/
+                if (vars['jaehyeon'][2] == 1)
+                {
+                    scene.remove(scene.getObjectByName("jaehyeon"));
+                    jhyeon_x=num1_x;
+                    jhyeon_y=num1_y;
+                    jhyeon_z=num1_z;
+                                    JeaHyeon_On =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'blue');
+                JeaHyeon_Off =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'red');
+                JeaHyeon_H =  makeBillboard(jhyeon_x, height+460, jhyeon_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jeahyeon.mtl', 'static/Virtual_obj/Jeahyeon.obj', "jaehyeon",jhyeon_x, jhyeon_y, jhyeon_z,-0.25,-0.15,-0.25);  
+                    scene.add(JeaHyeon_On);
+                }
+                else if (vars['jaehyeon'][2] == 2)
+                {
+                    scene.remove(scene.getObjectByName("jaehyeon"));
+                    jhyeon_x=num2_x;
+                    jhyeon_y=num2_y;
+                    jhyeon_z=num2_z;
+                                    JeaHyeon_On =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'blue');
+                JeaHyeon_Off =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'red');
+                JeaHyeon_H =  makeBillboard(jhyeon_x, height+460, jhyeon_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jeahyeon.mtl', 'static/Virtual_obj/Jeahyeon.obj', "jaehyeon",jhyeon_x, jhyeon_y, jhyeon_z,-0.25,-0.15,-0.25); 
+                    scene.add(JeaHyeon_On);
+                }
+                else if (vars['jaehyeon'][2] == 3)
+                {
+                    scene.remove(scene.getObjectByName("jaehyeon"));
+                    jhyeon_x=num3_x;
+                    jhyeon_y=num3_y;
+                    jhyeon_z=num3_z;
+                                    JeaHyeon_On =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'blue');
+                JeaHyeon_Off =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'red');
+                JeaHyeon_H =  makeBillboard(jhyeon_x, height+460, jhyeon_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jeahyeon.mtl', 'static/Virtual_obj/Jeahyeon.obj', "jaehyeon",jhyeon_x, jhyeon_y, jhyeon_z,-0.25,-0.15,-0.25);  
+                    scene.add(JeaHyeon_On);    
+                }
+                else if (vars['jaehyeon'][2] == 4)
+                {
+                    scene.remove(scene.getObjectByName("jaehyeon"));
+                    jhyeon_x=num4_x;
+                    jhyeon_y=num4_y;
+                    jhyeon_z=num4_z;
+                                    JeaHyeon_On =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'blue');
+                JeaHyeon_Off =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'red');
+                JeaHyeon_H =  makeBillboard(jhyeon_x, height+460, jhyeon_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jeahyeon.mtl', 'static/Virtual_obj/Jeahyeon.obj', "jaehyeon",jhyeon_x, jhyeon_y, jhyeon_z,-0.25,-0.15,-0.25); 
+                    scene.add(JeaHyeon_On);    
+                }
+                else if (vars['jaehyeon'][2] == 5)
+                {
+                    scene.remove(scene.getObjectByName("jaehyeon"));
+                    jhyeon_x=num5_x;
+                    jhyeon_y=num5_y;
+                    jhyeon_z=num5_z;
+                                    JeaHyeon_On =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'blue');
+                JeaHyeon_Off =  makeBillboard(jhyeon_x, height+400, jhyeon_z, 1800, 800, 'JaeHyeon', 'red');
+                JeaHyeon_H =  makeBillboard(jhyeon_x, height+460, jhyeon_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jeahyeon.mtl', 'static/Virtual_obj/Jeahyeon.obj', "jaehyeon",jhyeon_x, jhyeon_y, jhyeon_z,-0.25,-0.15,-0.25);
+                    scene.add(JeaHyeon_On);    
+                }
+                else if (vars['jaehyeon'][2] == -100)
+                {
+                    scene.remove(scene.getObjectByName("jaehyeon"));
+                }
+                
+                /***************************************Jinho****************************************/
+                if (vars['jinho'][2] == 1)
+                {
+                    scene.remove(scene.getObjectByName("jinho"));
+                    jho_x=num1_x;
+                    jho_y=num1_y;
+                    jho_z=num1_z;
+                    
+                
+                JinHo_On =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'blue');
+                JinHo_Off =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'red');
+                JinHo_H =  makeBillboard(jho_x, height+460, jho_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jinho.mtl', 'static/Virtual_obj/Jinho.obj', "jinho",       jho_x, jho_y, jho_z, -0.25,-0.15,-0.25 );
+                    scene.add(JinHo_On);
+                }
+                else if (vars['jinho'][2] == 2)
+                {
+                    scene.remove(scene.getObjectByName("jinho"));
+                    jho_x=num2_x;
+                    jho_y=num2_y;
+                    jho_z=num2_z;
+                    
+                
+                JinHo_On =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'blue');
+                JinHo_Off =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'red');
+                JinHo_H =  makeBillboard(jho_x, height+460, jho_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jinho.mtl', 'static/Virtual_obj/Jinho.obj', "jinho",       jho_x, jho_y, jho_z, -0.25,-0.15,-0.25 );
+                    scene.add(JinHo_On);                        
+                }
+                else if (vars['jinho'][2] == 3)
+                {   
+                    scene.remove(scene.getObjectByName("jinho"));
+                    jho_x=num3_x;
+                    jho_y=num3_y;
+                    jho_z=num3_z;
+                    
+                
+                JinHo_On =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'blue');
+                JinHo_Off =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'red');
+                JinHo_H =  makeBillboard(jho_x, height+460, jho_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jinho.mtl', 'static/Virtual_obj/Jinho.obj', "jinho",       jho_x, jho_y, jho_z, -0.25,-0.15,-0.25 );
+                    scene.add(JinHo_On);                        
+                }
+                else if (vars['jinho'][2] ==4)
+                {
+                    scene.remove(scene.getObjectByName("jinho"));
+                    jho_x=num4_x;
+                    jho_y=num4_y;
+                    jho_z=num4_z;
+                    
+                
+                JinHo_On =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'blue');
+                JinHo_Off =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'red');
+                JinHo_H =  makeBillboard(jho_x, height+460, jho_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jinho.mtl', 'static/Virtual_obj/Jinho.obj', "jinho",       jho_x, jho_y, jho_z, -0.25,-0.15,-0.25 );
+                    scene.add(JinHo_On);   
+                }
+                else if (vars['jinho'][2] == 5)
+                {
+                    scene.remove(scene.getObjectByName("jinho"));
+                    jho_x=num5_x;
+                    jho_y=num5_y;
+                    jho_z=num5_z;
+                    
+                
+                JinHo_On =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'blue');
+                JinHo_Off =  makeBillboard(jho_x, height+400, jho_z, 1800, 800, 'JinHo', 'red');
+                JinHo_H =  makeBillboard(jho_x, height+460, jho_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Jinho.mtl', 'static/Virtual_obj/Jinho.obj', "jinho",       jho_x, jho_y, jho_z, -0.25,-0.15,-0.25 );
+                    scene.add(JinHo_On);   
+                }
+                else if (vars['jinho'][2] == -100)
+                {
+                    scene.remove(scene.getObjectByName("jinho"));
+                }
+                /***************************************Yoosung****************************************/
+                if (vars['yoosung'][2] == 1)
+                {
+                    scene.remove(scene.getObjectByName("yoosung"));
+                    ys_x=num1_x;
+                    ys_y=num1_y;
+                    ys_z=num1_z;
+                                    Yoosung_On =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'blue');
+                Yoosung_Off =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'red');
+                Yoosung_H =  makeBillboard(ys_x, height+460, ys_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Yooseong.mtl', 'static/Virtual_obj/Yooseong.obj', "yoosung",ys_x, ys_y, ys_z,-0.25,-0.15,-0.25);
+                    scene.add(Yoosung_On);
+                }
+                else if (vars['yoosung'][2] == 2)
+                {
+                    scene.remove(scene.getObjectByName("yoosung"));
+                    ys_x=num2_x;
+                    ys_y=num2_y;
+                    ys_z=num2_z;
+                                    Yoosung_On =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'blue');
+                Yoosung_Off =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'red');
+                Yoosung_H =  makeBillboard(ys_x, height+460, ys_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Yooseong.mtl', 'static/Virtual_obj/Yooseong.obj', "yoosung",ys_x, ys_y, ys_z,-0.25,-0.15,-0.25);
+                    scene.add(Yoosung_On);
+                }
+                else if (vars['yoosung'][2] == 3)
+                {
+                    scene.remove(scene.getObjectByName("yoosung"));
+                    ys_x=num3_x;
+                    ys_y=num3_y;
+                    ys_z=num3_z;
+                                    Yoosung_On =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'blue');
+                Yoosung_Off =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'red');
+                Yoosung_H =  makeBillboard(ys_x, height+460, ys_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Yooseong.mtl', 'static/Virtual_obj/Yooseong.obj', "yoosung",ys_x, ys_y, ys_z,-0.25,-0.15,-0.25);
+                    scene.add(Yoosung_On);
+                }
+                else if (vars['yoosung'][2] == 4)
+                {
+                    scene.remove(scene.getObjectByName("yoosung"));
+                    ys_x=num4_x;
+                    ys_y=num4_y;
+                    ys_z=num4_z;
+                                    Yoosung_On =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'blue');
+                Yoosung_Off =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'red');
+                Yoosung_H =  makeBillboard(ys_x, height+460, ys_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Yooseong.mtl', 'static/Virtual_obj/Yooseong.obj', "yoosung",ys_x, ys_y, ys_z,-0.25,-0.15,-0.25);
+                    scene.add(Yoosung_On);
+                }
+                else if (vars['yoosung'][2] == 5)
+                {
+                    scene.remove(scene.getObjectByName("yoosung"));
+                    ys_x=num5_x;
+                    ys_y=num5_y;
+                    ys_z=num5_z;
+                                    Yoosung_On =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'blue');
+                Yoosung_Off =  makeBillboard(ys_x, height+400, ys_z, 1800, 800, 'YooSung', 'red');
+                Yoosung_H =  makeBillboard(ys_x, height+460, ys_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Yooseong.mtl', 'static/Virtual_obj/Yooseong.obj', "yoosung",ys_x, ys_y, ys_z,-0.25,-0.15,-0.25);
+                    scene.add(Yoosung_On);
+                }
+                else if (vars['yoosung'][2] == -100)
+                {
+                    scene.remove(scene.getObjectByName("yoosung"));
+                }
+
+                if (vars['joohyeong'][2] == 1)
+                {
+                    scene.remove(scene.getObjectByName("joohyeong"));
+                    jhyeong_x=num1_x;
+                    jhyeong_y=num1_y;
+                    jhyeong_z=num1_z;
+                    JooHyeong_On = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'blue');
+                JooHyeong_Off = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'red');
+                JooHyeong_H = makeBillboard(jhyeong_x, height+460, jhyeong_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Joohyeong.mtl', 'static/Virtual_obj/Joohyeong.obj', "joohyeong",jhyeong_x, jhyeong_y, jhyeong_z,-0.25,-0.15,-0.25);
+                    scene.add(JooHyeong_On);
+                }
+                else if (vars['joohyeong'][2] == 2)
+                {
+                    scene.remove(scene.getObjectByName("joohyeong"));
+                    jhyeong_x=num2_x;
+                    jhyeong_y=num2_y;
+                    jhyeong_z=num2_z;
+                    JooHyeong_On = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'blue');
+                JooHyeong_Off = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'red');
+                JooHyeong_H = makeBillboard(jhyeong_x, height+460, jhyeong_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Joohyeong.mtl', 'static/Virtual_obj/Joohyeong.obj', "joohyeong",jhyeong_x, jhyeong_y, jhyeong_z,-0.25,-0.15,-0.25);
+                    scene.add(JooHyeong_On);
+                }
+                else if (vars['joohyeong'][2] == 3)
+                {
+                    scene.remove(scene.getObjectByName("joohyeong"));
+                    jhyeong_x=num3_x;
+                    jhyeong_y=num3_y;
+                    jhyeong_z=num3_z;
+                    JooHyeong_On = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'blue');
+                JooHyeong_Off = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'red');
+                JooHyeong_H = makeBillboard(jhyeong_x, height+460, jhyeong_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Joohyeong.mtl', 'static/Virtual_obj/Joohyeong.obj', "joohyeong",jhyeong_x, jhyeong_y, jhyeong_z,-0.25,-0.15,-0.25);
+                    scene.add(JooHyeong_On);
+                }
+                else if (vars['joohyeong'][2] == 4)
+                {
+                    scene.remove(scene.getObjectByName("joohyeong"));
+                    jhyeong_x=num4_x;
+                    jhyeong_y=num4_y;
+                    jhyeong_z=num4_z;
+                    JooHyeong_On = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'blue');
+                JooHyeong_Off = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'red');
+                JooHyeong_H = makeBillboard(jhyeong_x, height+460, jhyeong_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Joohyeong.mtl', 'static/Virtual_obj/Joohyeong.obj', "joohyeong",jhyeong_x, jhyeong_y, jhyeong_z,-0.25,-0.15,-0.25);
+                    scene.add(JooHyeong_On);
+                }
+                else if (vars['joohyeong'][2] == 5)
+                {
+                    scene.remove(scene.getObjectByName("joohyeong"));
+                    jhyeong_x=num5_x;
+                    jhyeong_y=num5_y;
+                    jhyeong_z=num5_z;
+                    JooHyeong_On = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'blue');
+                JooHyeong_Off = makeBillboard(jhyeong_x, height+400, jhyeong_z, 1800, 800, 'JooHyeong', 'red');
+                JooHyeong_H = makeBillboard(jhyeong_x, height+460, jhyeong_z, 1800, 800, 'Hand up', 'green');
+                    obj_load_with('static/Virtual_obj/Joohyeong.mtl', 'static/Virtual_obj/Joohyeong.obj', "joohyeong",jhyeong_x, jhyeong_y, jhyeong_z,-0.25,-0.15,-0.25);
+                    scene.add(JooHyeong_On);
+                }
+                else if (vars['joohyeong'][2] == -100)
+                {
+                    scene.remove(scene.getObjectByName("joohyeong"));
+                }
+
+
+
+
+
+
+            }        
+        }
+        scene.add(HyeonTae_Off);
+        scene.add(Yoosung_Off);
+        scene.add(JooHyeong_Off);
+        scene.add(JinHo_Off);
+        scene.add(JeaHyeon_Off);
+
+        obj_load_with('static/Virtual_obj/Hyeontae.mtl', 'static/Virtual_obj/Hyeontae.obj', 'hyeontae', ht_x, ht_y, ht_z,-0.25,-0.15,-0.25 );
+        obj_load_with('static/Virtual_obj/Yooseong.mtl', 'static/Virtual_obj/Yooseong.obj', 'yoosung', ys_x, ys_y, ys_z,-0.25,-0.15,-0.25);
+        obj_load_with('static/Virtual_obj/Jinho.mtl', 'static/Virtual_obj/Jinho.obj', 'jinho', jho_x, jho_y, jho_z, -0.25,-0.15,-0.25 );
+        obj_load_with('static/Virtual_obj/Joohyeong.mtl', 'static/Virtual_obj/Joohyeong.obj', 'joohyeong', jhyeong_x, jhyeong_y, jhyeong_z,-0.25,-0.15,-0.25);
+        obj_load_with('static/Virtual_obj/Jeahyeon.mtl', 'static/Virtual_obj/Jeahyeon.obj', 'jaehyeon',jhyeon_x, jhyeon_y, jhyeon_z,-0.25,-0.15,-0.25);     
+        obj_load_with('static/material/Board.mtl', 'static/obj/Board.obj',0, 200, 0,0,0.8,0.8);
+        
+        const source = new EventSource("/video_info_streaming");
+        source.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            //console.log(data);
+            //mymain(data);
+
+            scene.remove(HyeonTae_On);
+            scene.remove(HyeonTae_Off);
+            scene.remove(JinHo_On);
+            scene.remove(JinHo_Off);
+            scene.remove(JeaHyeon_On);
+            scene.remove(JeaHyeon_Off);
+            scene.remove(JooHyeong_On);
+            scene.remove(JooHyeong_Off);
+            scene.remove(Yoosung_On);
+            scene.remove(Yoosung_Off);
+            text(data);
+
+        }
+
+        main();
+
+    </script>
+
+</body>
+</html> 

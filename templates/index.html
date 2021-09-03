@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360classroom</title>
+    <link rel = "stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ui.css') }}"/>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><a href="#">360 Twin Classroom</a></h1>
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                     <li><a href="#">소개</a></li>
+                     <li><form action="/" method="GET">
+                        <a href="/Hair" class="card-link">Avatar Register</a>
+                      </form></li>
+                </ul>
+            </div>
+        </div>
+      
+      <div class="containerBox">
+         <div class="containerBox1">
+            <!--<iframe width=100% height=100% src="https://www.youtube.com/embed/Y76yRufNlmU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+            <iframe width=100% height=100% src="https://www.youtube.com/embed/9AO8-ajwqXQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <form action="/" method="GET">
+                            <a href="/virtualSpatial" class="card-link">virtualSpatial</a>
+                        </form>
+                
+                    <form action="/" method="GET">
+                        <a href="/realSpatial" class="card-link2">realSpatial</a>
+                    </form>
+         </div>
+      </div>
+        <table style="margin-left: 82%;" bgcolor="white">
+
+        <thead>
+          <tr>
+            <th class="name-col">Student</th>
+            <th>1주차</th>
+            <th>2주차</th>
+            <th>3주차</th>
+            <th>4주차</th>
+            <th>5주차</th>
+
+            <th class="missed-col">현재 상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="student">
+            <td cass="name-coll">김유성</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox"></td>
+            <td class="attend-col"><input type="checkbox"></td>
+            <td class id="missed-col1">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">김주형</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox"></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col2">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">김진호</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col3">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">박재현</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox"  ></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col4">x</td>
+          </tr>
+          <tr class="student">
+            <td class="name-col">유현태</td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" checked disabled></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class="attend-col"><input type="checkbox" ></td>
+            <td class id="missed-col5">x</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script type = "text/javascript" src = "{{ url_for('static', filename = 'js/script_js.js') }}" ></script>
+    
+    
+    
+
+</body>
+</html>
